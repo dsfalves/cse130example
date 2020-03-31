@@ -13,9 +13,14 @@ int main(int argc, char **argv) {
     printf("%s\n", argv[i]);
   }
 
+  if(argc < 2) {
+    return 0;
+  }
+
   memset(buf, 0, 101);
   fd = open(argv[1], O_RDONLY);
   n = read(fd, buf, 100);
   printf("%s\n", buf);
   printf("%d\n", n);
+  return 0;
 }
