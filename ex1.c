@@ -5,9 +5,11 @@
 #include <fcntl.h>
 #include <string.h>
 
+#define BUFSIZE 101
+
 int main(int argc, char **argv) {
   int i, fd, n;
-  char buf[101];
+  char buf[BUFSIZE];
   printf("hello world\n");
   for(i = 1; i < argc; i++) {
     printf("%s\n", argv[i]);
@@ -17,10 +19,16 @@ int main(int argc, char **argv) {
     return 0;
   }
 
-  memset(buf, 0, 101);
-  fd = open(argv[1], O_RDONLY);
-  n = read(fd, buf, 100);
-  printf("%s\n", buf);
+  memset(buf, 0, BUFSIZE);
+  if ((fd = open(argv[1], O_RDONLY)) < 0) {
+    printf("Error happened\n");
+    return 1;
+  }
+  while((n = read(fd, buf, BUFSIZE-1)) > 0) {
+    printf("%s", buf);
+    memset(buf, 0, BUFSIZE);
+  }
+  printf("\n");
   printf("%d\n", n);
   return 0;
 }
